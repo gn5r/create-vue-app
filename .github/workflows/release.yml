@@ -1,0 +1,75 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  TAG_NAME: ${GITHUB_REF#refs/tags/}
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  create-release:
+    needs: [ci]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: echo "DIST_TAG=$(node scripts/parse-dist-tag.cjs)" >> $GITHUB_ENV
+
+      - name: Build changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          configuration: ".github/workflows/templates/configuration.json"
+
+      - name: Create release note
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: ${{ env.DIST_TAG != 'latest' }}
+          tag_name: ${{ env.TAG_NAME }}
+          body: ${{ steps.build_changelog.outputs.changelog }}
+
+  deploy:
+    needs: [create-release]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        uses: actions/cache@v3
+        env:
+          cache-name: cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+      - run: yarn --frozen-lockfile --non-interactive
+
+      - name: Publish to npm
+        run: bash scripts/release.sh
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
