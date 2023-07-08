@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "vite-plugin-pages": "^0.28.0",
+    "vite-plugin-vue-layouts": "^0.8.0"
+  }
+}
