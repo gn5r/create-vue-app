@@ -8,7 +8,7 @@ async function bundle() {
     format: "cjs",
     platform: "node",
     target: "node16",
-    external: ["minimist", "prompts"],
+    external: ["minimist", "prompts", "kolorist"],
   });
 }
 
