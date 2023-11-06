@@ -1,9 +1,5 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <v-container fluid></v-container>
 </template>
 
 <script setup lang="ts"></script>
