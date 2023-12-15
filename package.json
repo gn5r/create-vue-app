@@ -24,16 +24,19 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
-    "lint": "eslint --ext .ts src",
-    "lint:fix": "prettier --write src/**/*.ts",
-    "prepublishOnly": "npm run build"
+    "lint": "eslint src --ext .js,.mjs,.cjs,.ts,.mts,.cts --ignore-path .gitignore",
+    "lint:fix": "prettier --write **/*{js,mjs,cjs,ts,mts,cts,vue} --ignore-path .gitignore",
+    "prepublishOnly": "npm run build",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "minimist": "^1.2.8",
     "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
     "prompts": "^2.4.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@types/lodash-es": "^4.17.7",
     "@types/minimist": "^1.2.2",
     "@types/node": "^20.4.1",
@@ -42,6 +45,8 @@
     "@typescript-eslint/parser": "^5.61.0",
     "esbuild": "^0.18.11",
     "eslint": "^8.44.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
     "lodash-es": "^4.17.21",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6"
