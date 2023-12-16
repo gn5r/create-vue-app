@@ -35,7 +35,7 @@ type Context = {
   usePages?: boolean;
   useVueLayouts?: boolean;
   runGitInit?: boolean;
-  usePackageManager?: "npm" | "yarn";
+  usePackageManager?: "npm" | "yarn" | null;
 };
 
 async function initPrompts(context: Context) {
