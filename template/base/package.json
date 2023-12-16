@@ -18,6 +18,8 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
     "@types/node": "^20.8.10",
     "@types/webfontloader": "^1.6.36",
     "@vitejs/plugin-vue": "^4.4.0",
