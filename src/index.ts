@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { resolve, join } from "node:path";
+import path from "node:path";
 import fs from "node:fs";
 
 import minimist from "minimist";
@@ -44,7 +44,7 @@ async function run() {
     usePackageManager,
   } = await initPrompts(context);
 
-  const root = join(cwd, targetDir);
+  const root = path.join(cwd, targetDir);
 
   if (fs.existsSync(root) && isOverwrite) {
     emptyDir(root);
@@ -53,7 +53,7 @@ async function run() {
   }
 
   fs.writeFileSync(
-    resolve(root, "package.json"),
+    path.resolve(root, "package.json"),
     JSON.stringify(
       {
         name: packageName,
@@ -66,15 +66,15 @@ async function run() {
     )
   );
 
-  const templatePath = resolve(__dirname, "../template");
-  renderTemplate(resolve(templatePath, "base"), root);
+  const templatePath = path.resolve(__dirname, "../template");
+  renderTemplate(path.resolve(templatePath, "base"), root);
 
   if (usePages && useVueLayouts) {
-    renderTemplate(resolve(templatePath, "pagesAndVueLayouts"), root);
+    renderTemplate(path.resolve(templatePath, "pagesAndVueLayouts"), root);
   } else if (usePages) {
-    renderTemplate(resolve(templatePath, "pages"), root);
+    renderTemplate(path.resolve(templatePath, "pages"), root);
   } else if (useVueLayouts) {
-    renderTemplate(resolve(templatePath, "vueLayouts"), root);
+    renderTemplate(path.resolve(templatePath, "vueLayouts"), root);
   }
 
   if (runGitInit) {

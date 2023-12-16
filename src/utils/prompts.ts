@@ -1,6 +1,6 @@
 import prompts from "prompts";
 import { red } from "kolorist";
-import { existsSync, readdirSync } from "node:fs";
+import fs from "node:fs";
 
 const currentDirs = [".", "./"];
 
@@ -16,8 +16,8 @@ function toValidPackageName(projectName?: string) {
 
 function skipEmpty(dir?: string) {
   if (!dir) return true;
-  if (!existsSync(dir)) return true;
-  const files = readdirSync(dir);
+  if (!fs.existsSync(dir)) return true;
+  const files = fs.readdirSync(dir);
   if (files.length === 0) return true;
   if (files.length === 1 && files[0] === ".git") return true;
 
