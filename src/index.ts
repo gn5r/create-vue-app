@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { resolve, join } from "node:path";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import fs from "node:fs";
 
 import minimist from "minimist";
 import {
@@ -10,11 +10,15 @@ import {
   installDependencies,
   emptyDir,
   initialGit,
+  preDirectoryTraverse,
+  postDirectoryTraverse,
 } from "./utils";
 
 import type { Context } from "./utils/prompts";
 
 import { bold, green, red } from "kolorist";
+
+import ejs from "ejs";
 
 async function run() {
   const argv = minimist(process.argv.slice(2));
@@ -42,13 +46,13 @@ async function run() {
 
   const root = join(cwd, targetDir);
 
-  if (existsSync(root) && isOverwrite) {
+  if (fs.existsSync(root) && isOverwrite) {
     emptyDir(root);
-  } else if (!existsSync(root)) {
-    mkdirSync(root);
+  } else if (!fs.existsSync(root)) {
+    fs.mkdirSync(root);
   }
 
-  writeFileSync(
+  fs.writeFileSync(
     resolve(root, "package.json"),
     JSON.stringify(
       {
@@ -81,6 +85,35 @@ async function run() {
     console.log(`Installing dependencies with ${usePackageManager}...\n`);
     installDependencies(root, usePackageManager);
   }
+
+  // EJS template rendering
+  preDirectoryTraverse(
+    root,
+    () => {},
+    (filepath: string) => {
+      if (filepath.endsWith(".ejs")) {
+        const template = fs.readFileSync(filepath, "utf8");
+        const dest = filepath.replace(/\.ejs$/, "");
+        const content = ejs.render(template, {
+          packageManager: usePackageManager,
+        });
+
+        fs.writeFileSync(dest, content);
+        fs.unlinkSync(filepath);
+      }
+    }
+  );
+
+  // grant execute permission to files under .husky
+  postDirectoryTraverse(
+    `${root}/.husky`,
+    () => {},
+    (filepath: string) => {
+      if (!(fs.statSync(filepath).mode & 0o111)) {
+        fs.chmodSync(filepath, 0o755);
+      }
+    }
+  );
 
   console.log(
     `\n${bold(green(`${projectName} has been generated at ${root}\n`))}`

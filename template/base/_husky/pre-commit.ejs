@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+<%_ if (packageManager != null) { _%>
+<%- packageManager %> lint-staged
+<%_ } else { _%>
+yarn lint-staged
+<%_ } _%>

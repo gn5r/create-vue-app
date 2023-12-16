@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+<%_ if (packageManager != null) { _%>
+<%- packageManager %> commitlint --edit "$1"
+<%_ } else { _%>
+yarn commitlint --edit "$1"
+<%_ } _%>
