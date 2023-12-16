@@ -1,17 +1,17 @@
 import fs from "node:fs";
-import { resolve } from "node:path";
+import path from "node:path";
 
 function emptyDir(dir: string) {
   if (!fs.existsSync(dir)) return;
 
   for (const filename of fs.readdirSync(dir)) {
     if (filename === ".git") continue;
-    const path = resolve(dir, filename);
+    const fullpath = path.resolve(dir, filename);
 
-    if (fs.lstatSync(path).isDirectory()) {
-      emptyDir(path);
+    if (fs.lstatSync(fullpath).isDirectory()) {
+      emptyDir(fullpath);
     } else {
-      fs.unlinkSync(path);
+      fs.unlinkSync(fullpath);
     }
   }
 }
@@ -23,15 +23,16 @@ function preDirectoryTraverse(
 ) {
   for (const filename of fs.readdirSync(dir)) {
     if (filename === ".git") continue;
-    const path = resolve(dir, filename);
-    if (fs.lstatSync(path).isDirectory()) {
-      dirCallback(path);
-      if (fs.existsSync(path)) {
-        preDirectoryTraverse(path, dirCallback, fileCallback);
+    const fullpath = path.resolve(dir, filename);
+
+    if (fs.lstatSync(fullpath).isDirectory()) {
+      dirCallback(fullpath);
+      if (fs.existsSync(fullpath)) {
+        preDirectoryTraverse(fullpath, dirCallback, fileCallback);
       }
       continue;
     }
-    fileCallback(path);
+    fileCallback(fullpath);
   }
 }
 
@@ -42,13 +43,14 @@ function postDirectoryTraverse(
 ) {
   for (const filename of fs.readdirSync(dir)) {
     if (filename === ".git") continue;
-    const path = resolve(dir, filename);
-    if (fs.lstatSync(path).isDirectory()) {
-      postDirectoryTraverse(path, dirCallback, fileCallback);
-      dirCallback(path);
+    const fullpath = path.resolve(dir, filename);
+
+    if (fs.lstatSync(fullpath).isDirectory()) {
+      postDirectoryTraverse(fullpath, dirCallback, fileCallback);
+      dirCallback(fullpath);
       continue;
     }
-    fileCallback(path);
+    fileCallback(fullpath);
   }
 }
 
