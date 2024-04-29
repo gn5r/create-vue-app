@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
-    "lint": "eslint src --ext .js,.mjs,.cjs,.ts,.mts,.cts --ignore-path .gitignore",
+    "lint": "eslint src/**/*.{js,mjs,cjs,ts,mts,cts}",
     "lint:fix": "prettier --write **/*{js,mjs,cjs,ts,mts,cts,vue} --ignore-path .gitignore",
     "prepublishOnly": "npm run build",
     "prepare": "husky install"
@@ -37,20 +37,21 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@eslint/js": "^9.1.1",
     "@types/ejs": "^3.1.5",
     "@types/lodash-es": "^4.17.7",
     "@types/minimist": "^1.2.2",
     "@types/node": "^20.4.1",
     "@types/prompts": "^2.4.4",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
     "ejs": "^3.1.9",
     "esbuild": "^0.18.11",
-    "eslint": "^8.44.0",
+    "eslint": "^9.1.1",
+    "globals": "^15.1.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "lodash-es": "^4.17.21",
     "prettier": "^3.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "typescript-eslint": "^7.7.1"
   }
 }
