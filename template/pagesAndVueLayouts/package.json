@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "unplugin-vue-router": "^0.7.0",
+    "vite-plugin-pages": "^0.32.1",
     "vite-plugin-vue-layouts": "^0.8.0"
   }
 }
