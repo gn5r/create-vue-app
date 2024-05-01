@@ -24,7 +24,7 @@
   },
   "scripts": {
     "build": "node scripts/build.js",
-    "lint": "eslint src/**/*.{js,mjs,cjs,ts,mts,cts}",
+    "lint": "eslint **/*.{js,mjs,cjs,ts,mts,cts}",
     "lint:fix": "prettier --write **/*{js,mjs,cjs,ts,mts,cts,vue} --ignore-path .gitignore",
     "prepublishOnly": "npm run build",
     "prepare": "husky install"
