@@ -14,7 +14,8 @@
     "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "lib": [                                             /* Specify a set of bundled library declaration files that describe the target runtime environment. */
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "ESNext"
     ],
     "jsx": "preserve",                                   /* Specify what JSX code is generated. */
     // "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
@@ -39,8 +40,6 @@
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
     "types": [                                           /* Specify type package names to be included without being referenced in a source file. */
       "node",
-      "vue-router",
-      "vuetify",
       "vite-plugin-vue-layouts/client",
       "vite-plugin-pages/client"
     ],
@@ -111,6 +110,6 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["typed-router.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["src/**/*", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
